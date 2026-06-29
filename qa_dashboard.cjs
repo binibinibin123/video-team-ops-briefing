@@ -8,7 +8,8 @@ const { chromium } = require('playwright');
     if (msg.type() === 'error') errors.push(msg.text());
   });
   page.on('pageerror', err => errors.push(err.message));
-  await page.goto('http://127.0.0.1:8799/index.html', { waitUntil: 'networkidle' });
+  const targetUrl = process.argv[2] || 'http://127.0.0.1:8799/index.html';
+  await page.goto(targetUrl, { waitUntil: 'networkidle' });
   const result = await page.evaluate(() => {
     const visibleText = document.body.innerText;
     const required = ['영상팀 운영 브리핑', '오늘 핵심 변경', '스냅스', '이재은', '최유정', '프로젝트별 현재 상태', '사람별 지금 하는 일'];
