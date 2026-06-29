@@ -112,6 +112,15 @@ def status_label(row):
     return ' · '.join(bits) or '상태 확인 필요'
 
 
+def display_task_title(title: str) -> str:
+    # The public briefing should show operational action, not upload/volume-like counts.
+    replacements = {
+        '미닉스 7월 1주차 40건': '미닉스 7월 1주차 컨펌 대응',
+        '동아제약 7/1 제작분 3건': '동아제약 7/1 제작분 준비',
+    }
+    return replacements.get(title or '', title or '')
+
+
 def extract_latest_markdown(path: Path, heading_contains: str | None = None, max_lines=8):
     if not path.exists():
         return []
@@ -194,7 +203,7 @@ def build():
         task_summaries = []
         for t in tasks[:4]:
             task_summaries.append({
-                'title': t.get('task_title',''),
+                'title': display_task_title(t.get('task_title','')),
                 'status': t.get('status',''),
                 'priority': t.get('priority',''),
                 'due': t.get('due_date',''),
@@ -228,9 +237,9 @@ def build():
 
     data = {
         'meta': {
-            'title': '영상팀 운영 브리핑',
-            'lastUpdated': '2026-06-29 · 이재은 최유정 지원 반영',
-            'designReference': 'VoltAgent awesome-design-md: Airtable workflow cards + Notion tinted database cards + Miro board readability',
+            'title': '영상팀 운영상황판',
+            'lastUpdated': '2026-06-29 · DESIGN.md 기반 운영판 재디자인',
+            'designReference': 'VoltAgent awesome-design-md 직접 적용: Airtable DESIGN.md 업무카드 + Notion DESIGN.md DB 태그 + Miro DESIGN.md sticky note',
             'privacyNote': 'GitHub Pages 공개 링크용 정적 브리핑. 검색 노출 최소화를 위해 noindex 메타 적용.',
         },
         'stats': stats,

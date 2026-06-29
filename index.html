@@ -4,115 +4,123 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex,nofollow,noarchive" />
-  <title>영상팀 운영 브리핑</title>
+  <title>영상팀 운영상황판</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <div class="noise" aria-hidden="true"></div>
-  <header class="hero">
-    <nav class="topbar" aria-label="상단 메뉴">
-      <a class="brand" href="#top" aria-label="영상팀 운영 브리핑 홈">
+  <a class="skip-link" href="#projects">프로젝트 보드로 건너뛰기</a>
+  <div class="app-shell">
+    <header id="top" class="ops-header">
+      <a class="brand" href="#top" aria-label="영상팀 운영상황판 홈">
         <span class="brand-mark">V</span>
         <span>
-          <strong>영상팀 운영 브리핑</strong>
-          <em>Project / People Board</em>
+          <strong>영상팀 운영상황판</strong>
+          <em>Project · People · Bottleneck</em>
         </span>
       </a>
-      <div class="nav-actions">
-        <a href="#projects">프로젝트</a>
-        <a href="#people">사람별</a>
-        <a href="#updates">업데이트</a>
+      <div class="header-meta" aria-label="페이지 정보">
+        <span>읽기 전용</span>
+        <span>GitHub Pages</span>
+        <span id="lastUpdated">업데이트 확인중</span>
       </div>
-    </nav>
+    </header>
 
-    <section id="top" class="hero-grid">
-      <div class="hero-copy">
-        <p class="eyebrow">LIVE OPS BOARD · NO UPLOAD COUNT VIEW</p>
-        <h1>오늘 누가, 어떤 프로젝트를, 어디까지 맡는지 한눈에.</h1>
-        <p class="hero-desc">
-          업로드 수량표가 아니라 업무 배치도입니다. 프로젝트 오너, 지원 전환, 병목만 크게 보이도록 정리했습니다.
+    <section class="overview-grid" aria-label="운영 브리핑 요약">
+      <div class="summary-panel">
+        <p class="eyebrow">VIDEO TEAM OPS BOARD</p>
+        <h1>업무 배치와 병목만 빠르게 확인하는 보드</h1>
+        <p class="lede">
+          업로드 수량표가 아니라, 프로젝트 오너·지원 전환·대기/병목 상태를 보는 운영판입니다.
+          첫 화면에서 오늘 바뀐 담당과 막히는 지점을 바로 확인하도록 재구성했습니다.
         </p>
-        <div class="hero-pills" id="heroPills" aria-label="핵심 지표"></div>
+        <div id="heroPills" class="metric-strip" aria-label="운영 요약 지표"></div>
+        <p class="source-note">
+          디자인 기준: Airtable DESIGN.md의 흰 캔버스/헤어라인 업무카드, Notion DESIGN.md의 DB 태그/파스텔 카드, Miro DESIGN.md의 sticky note 강조만 적용.
+        </p>
       </div>
 
-      <aside class="command-card" aria-label="오늘 핵심 변경">
-        <div class="card-head">
-          <span class="dot live"></span>
-          <span>오늘 핵심 변경</span>
+      <aside class="decision-panel" aria-label="오늘 핵심 변경">
+        <div class="panel-title">
+          <span class="panel-dot"></span>
+          <div>
+            <p class="eyebrow">TODAY CHANGES</p>
+            <h2>오늘 핵심 변경</h2>
+          </div>
         </div>
-        <div id="keyChanges" class="key-changes"></div>
+        <div id="keyChanges" class="sticky-stack"></div>
       </aside>
     </section>
-  </header>
 
-  <main>
-    <section class="section design-note" aria-label="디자인 기준">
-      <div>
-        <p class="eyebrow">DESIGN DIRECTION</p>
-        <h2>가시성 우선: 보드형 카드 + 리스크 색상 + 큰 한글 타이포</h2>
-      </div>
-      <p>
-        Airtable식 업무 카드, Notion식 상태 태그, Miro식 화이트보드 가독성을 섞었습니다. 모바일에서 먼저 읽히도록 핵심 문장과 병목만 남겼습니다.
-      </p>
-    </section>
+    <nav class="board-nav" aria-label="보드 빠른 이동">
+      <a href="#projects">프로젝트 보드</a>
+      <a href="#people">사람별 배치</a>
+      <a href="#updates">변경 로그</a>
+      <a href="./DESIGN_MAPPING.md">디자인 근거</a>
+    </nav>
 
-    <section id="projects" class="section">
-      <div class="section-header">
-        <div>
-          <p class="eyebrow">PROJECTS</p>
-          <h2>프로젝트별 현재 상태</h2>
+    <main>
+      <section id="projects" class="section board-section">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">PROJECTS</p>
+            <h2>프로젝트 보드</h2>
+            <p>병목 → 집중 → 대기 → 진행 순서로 배치했습니다. 각 카드는 담당자와 현재 액션만 남겼습니다.</p>
+          </div>
+          <div class="filter-bar" role="group" aria-label="프로젝트 상태 필터">
+            <button class="filter active" data-filter="all">전체</button>
+            <button class="filter" data-filter="risk">병목</button>
+            <button class="filter" data-filter="focus">집중</button>
+            <button class="filter" data-filter="waiting">대기</button>
+            <button class="filter" data-filter="steady">진행</button>
+          </div>
         </div>
-        <div class="filter-bar" role="group" aria-label="프로젝트 필터">
-          <button class="filter active" data-filter="all">전체</button>
-          <button class="filter" data-filter="risk">병목</button>
-          <button class="filter" data-filter="focus">집중</button>
-          <button class="filter" data-filter="waiting">대기</button>
-        </div>
-      </div>
-      <div id="projectGrid" class="project-grid" aria-live="polite"></div>
-    </section>
+        <div id="projectGrid" class="kanban-board" aria-live="polite"></div>
+      </section>
 
-    <section id="people" class="section people-section">
-      <div class="section-header">
-        <div>
-          <p class="eyebrow">PEOPLE</p>
-          <h2>사람별 지금 하는 일</h2>
+      <section id="people" class="section people-section">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">PEOPLE</p>
+            <h2>사람별 배치</h2>
+            <p>메인/지원/휴무/병목을 사람 단위로 확인합니다. 업무명은 현재 액션 중심으로 줄였습니다.</p>
+          </div>
         </div>
-        <p class="section-caption">메인/지원/병목을 한 줄로 먼저 보여주고, 진행중인 업무만 아래에 붙였습니다.</p>
-      </div>
-      <div id="peopleGrid" class="people-grid" aria-live="polite"></div>
-    </section>
+        <div id="peopleGrid" class="people-board" aria-live="polite"></div>
+      </section>
 
-    <section id="updates" class="section updates-section">
-      <div class="section-header">
-        <div>
-          <p class="eyebrow">UPDATES</p>
-          <h2>최근 반영 로그</h2>
+      <section id="updates" class="section updates-section">
+        <div class="section-header compact">
+          <div>
+            <p class="eyebrow">CHANGE LOG</p>
+            <h2>최근 반영 로그</h2>
+          </div>
         </div>
-        <span id="lastUpdated" class="last-updated"></span>
-      </div>
-      <div id="updatesList" class="timeline"></div>
-    </section>
-  </main>
+        <div id="updatesList" class="timeline"></div>
+      </section>
+    </main>
 
-  <footer class="footer">
-    <span>Static GitHub Pages briefing · no backend</span>
-    <span id="designRef"></span>
-  </footer>
+    <footer class="footer">
+      <span>Static briefing · public GitHub Pages · noindex</span>
+      <span id="designRef"></span>
+    </footer>
+  </div>
 
   <template id="projectTemplate">
     <article class="project-card">
-      <div class="project-top">
-        <span class="tone-dot"></span>
+      <div class="card-top">
+        <span class="tone-dot" aria-hidden="true"></span>
         <span class="status-badge"></span>
       </div>
       <h3></h3>
       <div class="owner-row">
-        <span class="label">OWNER</span>
+        <span>담당</span>
         <strong class="owner"></strong>
       </div>
-      <ul></ul>
-      <div class="project-foot"></div>
+      <div class="meta-pills">
+        <span class="stage-pill"></span>
+        <span class="due-pill"></span>
+      </div>
+      <ul class="project-bullets"></ul>
     </article>
   </template>
 
