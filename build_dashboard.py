@@ -47,33 +47,58 @@ def split_notes(text: str, limit_each: int = 95, max_items: int = 3):
 
 
 PROJECT_OVERRIDES = {
-    '스냅스': {'tone': 'focus', 'bullets': ['컨펌 완료.', '표지영이 원본 6개 제작 집중.', '신유빈은 지원/관리 기록 유지.']},
+    '스냅스': {'tone': 'waiting', 'bullets': ['표지영 쿠쿠홈시스 메인 등록으로 우선순위 재확인 필요.', '기존 스냅스 원본 6개 일정은 별도 확인.', '신유빈은 지원/관리 기록 유지.']},
     '비더후드': {'tone': 'risk', 'bullets': ['표지영 지원 중단.', '정희헌 메인 중심으로 재정리.', '지원 공백 체크 필요.']},
     '벤슨': {'tone': 'steady', 'bullets': ['여기성 메인 중심.', '이재은 지원은 종료.', '신규 소구는 수요일부터 반영 예정.']},
     '최유정': {'tone': 'risk', 'bullets': ['김경은 휴무.', '정희헌과 이재은이 지원중.', '세이브본 부족 체크 필요.']},
     '동아제약': {'tone': 'waiting', 'bullets': ['남은 기획/자료 수급 대기.', '자료 들어오면 정희헌 제작 대응.', '비더후드와 병행이라 병목 주의.']},
     '삼양': {'tone': 'steady', 'bullets': ['탱글 3번 바리에이션 완료.', '4번 컨펌 추적.', '5/6번 후속 제작 병행.']},
-    '미닉스': {'tone': 'risk', 'bullets': ['완료본 일부 고객사 컨펌 대기.', '컨펌 후 바리에이션 진행 가능.', '조성주가 삼양과 병행 중.']},
+    '미닉스': {
+        'tone': 'risk',
+        'status': '긴급 · 발행/바리에이션 · 컨펌완료',
+        'stage': '발행/바리에이션',
+        'priority': '긴급',
+        'due': '2026-07-03',
+        'bullets': ['원본 영상 4개 컨펌 완료.', '6/30(화) 원본 4개 발행.', '각 원본당 9개씩 총 36개 바리에이션.', '7/1~7/4 하루 9개 업로드, 제작 완료는 7/3(금) 퇴근 전.']
+    },
     '볼보': {'tone': 'steady', 'bullets': ['최성진 메인으로 계속 진행.', '별도 지원 이슈 없음.']},
     'CJ': {'tone': 'steady', 'bullets': ['한은지 메인/현재진행.', '특이 리스크 없음.']},
     '아이돌종합': {'tone': 'waiting', 'bullets': ['김경은 휴무로 대기.', '복귀 후 재확인 필요.']},
     '듀오타이트': {'tone': 'waiting', 'bullets': ['이재은 메인 배정.', '현재 최유정 지원으로 착수 지연 가능.']},
     '뷰엑스 홍보영상': {'tone': 'focus', 'bullets': ['신유빈 관리중.', '팀 업무 분배와 함께 체크.']},
-    '헤븐리젤리': {'tone': 'waiting', 'bullets': ['표지영 메인 대기.', '스냅스 원본 제작 이후 재확인.']},
+    '헤븐리젤리': {'tone': 'waiting', 'bullets': ['표지영 쿠쿠홈시스 집중 마감 이후 재확인.', '후속 우선순위 확인 필요.']},
     '한손한끼': {'tone': 'steady', 'bullets': ['오너/세부 제작 상태 확인 필요.', '반복 운영 항목으로 별도 체크.']},
-    '쿠쿠홍시스': {'tone': 'steady', 'bullets': ['오너 미정.', '주후반 운영 항목으로 별도 체크.']},
+    '쿠쿠홈시스': {
+        'owner': '표지영',
+        'tone': 'focus',
+        'status': '긴급 · 제작/바리에이션 · 진행중',
+        'stage': '제작/바리에이션',
+        'priority': '긴급',
+        'due': '2026-07-03',
+        'bullets': ['표지영 메인 등록.', '원본 영상 1개: 7/1(수) 퇴근 전.', '바리에이션 14개: 7/3(금) 퇴근 전.', '이번 주 집중 마감으로 별도 추적.']
+    },
+    '쿠쿠홍시스': {
+        'title': '쿠쿠홈시스',
+        'owner': '표지영',
+        'tone': 'focus',
+        'status': '긴급 · 제작/바리에이션 · 진행중',
+        'stage': '제작/바리에이션',
+        'priority': '긴급',
+        'due': '2026-07-03',
+        'bullets': ['표지영 메인 등록.', '원본 영상 1개: 7/1(수) 퇴근 전.', '바리에이션 14개: 7/3(금) 퇴근 전.', '이번 주 집중 마감으로 별도 추적.']
+    },
 }
 
 PEOPLE_OVERRIDES = {
-    '신유빈': '팀 리드. 업무 분배/우선순위 판단, 스냅스 지원·관리 기록 유지, 뷰엑스 홍보영상 관리중.',
+    '신유빈': '팀 리드. 업무 분배/우선순위 판단, 스냅스 지원·관리 기록 유지, 쿠쿠홈시스/미닉스 주간 마감 체크, 뷰엑스 홍보영상 관리중.',
     '이재은': '벤슨 지원 종료. 현재 최유정 지원중. 듀오타이트 메인 착수는 최유정 지원 이후로 밀릴 수 있음.',
     '여기성': '벤슨 메인. 스냅스 메인에서 해제되어 벤슨 운영과 신규 소구 반영에 집중.',
-    '표지영': '스냅스 메인. 컨펌 완료된 스냅스 원본 6개 제작 집중. 비더후드 지원은 중단.',
+    '표지영': '쿠쿠홈시스 메인 등록. 원본 1개는 7/1(수) 퇴근 전, 바리에이션 14개는 7/3(금) 퇴근 전까지 완료. 스냅스 후속 우선순위는 재확인 필요.',
     '정희헌': '비더후드 메인. 최유정은 이재은도 합류했지만, 동아제약 자료 수급 후 제작까지 겹쳐 병목 주의.',
     '최성진': '볼보 메인으로 계속 진행.',
     '한은지': 'CJ 메인으로 계속 진행.',
     '김경은': '현재 휴무. 아이돌종합/최유정 메인이나 최유정은 지원 인력으로 커버 중.',
-    '조성주': '삼양 탱글 후속과 미닉스 컨펌/바리에이션 준비를 병행.',
+    '조성주': '미닉스 원본 4개 컨펌 완료. 6/30(화) 원본 4개 발행, 7/1~7/4 하루 9개 업로드. 총 36개 바리에이션 제작·검수는 7/3(금) 퇴근 전 완료 필요.',
 }
 
 
@@ -92,7 +117,7 @@ def priority_rank(row):
 def classify_project(row):
     title = row.get('project_title','')
     risk = row.get('risks','') + ' ' + row.get('dependencies','')
-    if title in {'스냅스'}:
+    if title in {'쿠쿠홈시스'}:
         return 'focus'
     if any(k in risk for k in ['병목', '부족', '휴무', '공백', '컨펌 전', '컨펌대기']):
         return 'risk'
@@ -184,12 +209,12 @@ def build():
             if not bullets:
                 bullets.extend(split_notes(p.get('notes'), max_items=2))
         project_cards.append({
-            'title': title,
-            'owner': p.get('owner') or '미정',
-            'status': status_label(p),
-            'stage': p.get('current_stage') or '미정',
-            'priority': p.get('priority') or '미정',
-            'due': p.get('upload_due_date') or '미정',
+            'title': override.get('title') or title,
+            'owner': override.get('owner') or p.get('owner') or '미정',
+            'status': override.get('status') or status_label(p),
+            'stage': override.get('stage') or p.get('current_stage') or '미정',
+            'priority': override.get('priority') or p.get('priority') or '미정',
+            'due': override.get('due') or p.get('upload_due_date') or '미정',
             'tone': override.get('tone') or classify_project(p),
             'bullets': bullets[:4] or ['세부 상태 확인 필요'],
         })
@@ -218,9 +243,9 @@ def build():
         })
 
     key_changes = [
-        {'label': '스냅스', 'title': '표지영 메인 확정', 'body': '컨펌 완료. 표지영은 비더후드 지원을 멈추고 스냅스 원본 6개 제작에 집중.'},
-        {'label': '이재은', 'title': '최유정 지원 전환', 'body': '벤슨 지원 종료 후 현재 최유정 지원중. 듀오타이트 착수는 뒤로 밀릴 수 있음.'},
-        {'label': '정희헌', 'title': '비더후드/동아 병목 주의', 'body': '비더후드 메인 유지. 최유정 지원은 이재은이 합류했지만 동아제약 제작까지 겹침.'},
+        {'label': '쿠쿠홈시스', 'title': '표지영 메인 등록', 'body': '원본 영상 1개는 7/1(수) 퇴근 전, 바리에이션 14개는 7/3(금) 퇴근 전까지 완료.'},
+        {'label': '미닉스', 'title': '원본 4개 컨펌 완료', 'body': '6/30(화) 원본 4개 발행. 각 원본당 9개씩 총 36개 바리에이션 진행.'},
+        {'label': '미닉스 일정', 'title': '수~토 업로드 / 금요일 제작 완료', 'body': '7/1(수)부터 7/4(토)까지 하루 9개 업로드 기준. 제작·검수는 7/3(금) 퇴근 전까지 끝내야 함.'},
     ]
 
     # Recent operational bullets from logs
@@ -238,7 +263,7 @@ def build():
     data = {
         'meta': {
             'title': '영상팀 운영상황판',
-            'lastUpdated': '2026-06-29 · DESIGN.md 기반 운영판 재디자인',
+            'lastUpdated': '2026-06-29 · 쿠쿠홈시스/미닉스 마감 일정 반영',
             'designReference': 'VoltAgent awesome-design-md 직접 적용: Airtable DESIGN.md 업무카드 + Notion DESIGN.md DB 태그 + Miro DESIGN.md sticky note',
             'privacyNote': 'GitHub Pages 공개 링크용 정적 브리핑. 검색 노출 최소화를 위해 noindex 메타 적용.',
         },
