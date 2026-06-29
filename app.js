@@ -1,16 +1,11 @@
 const toneLabels = {
-  risk: '병목 주의',
-  focus: '집중 작업',
+  risk: '병목',
+  focus: '집중',
   waiting: '대기',
-  steady: '진행중',
+  steady: '진행',
 };
 
-const boardColumns = [
-  { id: 'risk', title: '병목 주의', desc: '휴무·지원 공백·컨펌 대기처럼 오늘 먼저 봐야 하는 항목' },
-  { id: 'focus', title: '집중 작업', desc: '담당 전환 또는 마감 전 집중 제작이 필요한 항목' },
-  { id: 'waiting', title: '대기', desc: '자료/복귀/착수 순서 확인이 필요한 항목' },
-  { id: 'steady', title: '진행중', desc: '오너가 잡혀 있고 특이 리스크가 낮은 항목' },
-];
+const toneOrder = ['risk', 'focus', 'waiting', 'steady'];
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -25,121 +20,159 @@ function initials(name) {
   return s.length >= 2 ? s.slice(-2) : s;
 }
 
+function shortDate(date) {
+  const value = safe(date);
+  if (!value || value === '미정') return '미정';
+  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return value;
+  return `${Number(match[2])}/${Number(match[3])}`;
+}
+
 function countByTone(projects, tone) {
   return projects.filter(project => (project.tone || 'steady') === tone).length;
 }
 
-function renderPills(data) {
+function taskCount(people) {
+  return (people || []).reduce((sum, person) => sum + (person.tasks || []).length, 0);
+}
+
+function firstAction(project) {
+  const bullets = project.bullets || [];
+  return bullets[0] || project.status || '상태 확인 필요';
+}
+
+function detailText(project) {
+  const bullets = (project.bullets || []).slice(1, 4);
+  if (!bullets.length) return safe(project.status || '세부 체크 필요');
+  return bullets.join(' / ');
+}
+
+function renderSummary(data) {
   const projects = data.projects || [];
-  const stats = data.stats || {};
-  const items = [
-    ['프로젝트', stats.activeProjects ?? projects.length],
-    ['병목', stats.riskProjects ?? countByTone(projects, 'risk')],
-    ['집중', countByTone(projects, 'focus')],
-    ['팀원', stats.teamMembers ?? (data.people || []).length],
+  const people = data.people || [];
+  const cards = [
+    { label: '프로젝트', value: data.stats?.activeProjects ?? projects.length, sub: '운영 테이블 기준' },
+    { label: '병목', value: data.stats?.riskProjects ?? countByTone(projects, 'risk'), sub: '오늘 우선 확인' },
+    { label: '집중', value: countByTone(projects, 'focus'), sub: '마감 전 집중' },
+    { label: '팀원', value: data.stats?.teamMembers ?? people.length, sub: `${taskCount(people)}개 표시 업무` },
   ];
-  const wrap = $('#heroPills');
+
+  const wrap = $('#summaryCards');
   wrap.innerHTML = '';
-  items.forEach(([label, value]) => {
-    const item = document.createElement('div');
-    item.className = 'metric';
-    const strong = document.createElement('strong');
-    strong.textContent = value;
-    const span = document.createElement('span');
-    span.textContent = label;
-    item.append(strong, span);
-    wrap.appendChild(item);
+  cards.forEach(card => {
+    const node = document.createElement('article');
+    node.className = 'summary-card';
+    node.innerHTML = `
+      <span>${card.label}</span>
+      <strong>${card.value}</strong>
+      <em>${card.sub}</em>
+    `;
+    wrap.appendChild(node);
+  });
+}
+
+function priorityClass(project) {
+  if ((project.priority || '').includes('긴급') || project.tone === 'risk') return 'critical';
+  if ((project.priority || '').includes('높음') || project.tone === 'focus') return 'high';
+  if (project.tone === 'waiting') return 'waiting';
+  return 'normal';
+}
+
+function renderProjects(projects) {
+  const rows = $('#projectRows');
+  rows.innerHTML = '';
+
+  const sorted = [...(projects || [])].sort((a, b) => {
+    const ta = toneOrder.indexOf(a.tone || 'steady');
+    const tb = toneOrder.indexOf(b.tone || 'steady');
+    if (ta !== tb) return ta - tb;
+    return safe(a.due).localeCompare(safe(b.due), 'ko');
+  });
+
+  sorted.forEach((project, index) => {
+    const tone = project.tone || 'steady';
+    const row = document.createElement('tr');
+    row.className = 'project-row';
+    row.dataset.tone = tone;
+    row.innerHTML = `
+      <td>
+        <span class="status-dot ${tone}"></span>
+        <span class="status-chip ${priorityClass(project)}">${toneLabels[tone] || '진행'}</span>
+      </td>
+      <td>
+        <div class="project-name">
+          <span class="row-index">${String(index + 1).padStart(2, '0')}</span>
+          <strong>${safe(project.title)}</strong>
+        </div>
+      </td>
+      <td><span class="owner-chip">${safe(project.owner || '미정')}</span></td>
+      <td><span class="stage-text">${safe(project.stage || '미정')}</span></td>
+      <td><span class="date-pill">${shortDate(project.due)}</span></td>
+      <td class="action-cell">${safe(firstAction(project))}</td>
+      <td class="detail-cell">${safe(detailText(project))}</td>
+    `;
+    rows.appendChild(row);
   });
 }
 
 function renderKeyChanges(items) {
   const wrap = $('#keyChanges');
   wrap.innerHTML = '';
-  (items || []).forEach(item => {
+  (items || []).forEach((item, index) => {
     const card = document.createElement('article');
-    card.className = 'change-item';
-    const label = document.createElement('span');
-    label.className = 'change-label';
-    label.textContent = safe(item.label);
-    const title = document.createElement('h3');
-    title.textContent = safe(item.title);
-    const body = document.createElement('p');
-    body.textContent = safe(item.body);
-    card.append(label, title, body);
+    card.className = 'change-card';
+    card.innerHTML = `
+      <span class="change-no">0${index + 1}</span>
+      <div>
+        <small>${safe(item.label)}</small>
+        <strong>${safe(item.title)}</strong>
+        <p>${safe(item.body)}</p>
+      </div>
+    `;
     wrap.appendChild(card);
   });
 }
 
-function createProjectCard(project) {
-  const node = $('#projectTemplate').content.cloneNode(true);
-  const card = $('.project-card', node);
-  const tone = project.tone || 'steady';
-  card.dataset.tone = tone;
-  $('.status-badge', node).textContent = toneLabels[tone] || safe(project.status);
-  $('h3', node).textContent = safe(project.title);
-  $('.owner', node).textContent = safe(project.owner || '미정');
-  $('.stage-pill', node).textContent = safe(project.stage || project.status || '상태 확인');
-  $('.due-pill', node).textContent = project.due && project.due !== '미정' ? `일정 ${project.due}` : '일정 미정';
-  const list = $('.project-bullets', node);
-  list.innerHTML = '';
-  (project.bullets || ['세부 상태 확인 필요']).slice(0, 4).forEach(text => {
-    const li = document.createElement('li');
-    li.textContent = safe(text);
-    list.appendChild(li);
-  });
-  return node;
-}
-
-function renderProjects(projects) {
-  const grid = $('#projectGrid');
-  grid.innerHTML = '';
-  boardColumns.forEach(column => {
-    const projectsForColumn = projects.filter(project => (project.tone || 'steady') === column.id);
-    const section = document.createElement('section');
-    section.className = 'board-column';
-    section.dataset.tone = column.id;
-    section.innerHTML = `
-      <div class="column-head">
-        <h3>${column.title}</h3>
-        <span>${projectsForColumn.length}</span>
-      </div>
-      <p class="column-desc">${column.desc}</p>
-      <div class="card-stack"></div>
-    `;
-    const stack = $('.card-stack', section);
-    projectsForColumn.forEach(project => stack.appendChild(createProjectCard(project)));
-    grid.appendChild(section);
-  });
-}
-
-function renderPeople(people) {
-  const grid = $('#peopleGrid');
-  grid.innerHTML = '';
-  (people || []).forEach(person => {
-    const node = $('#personTemplate').content.cloneNode(true);
-    const card = $('.person-card', node);
-    card.dataset.tone = person.tone || 'steady';
-    $('.avatar', node).textContent = initials(person.name);
-    $('h3', node).textContent = safe(person.name);
-    $('.role', node).textContent = safe(person.role || '팀원');
-    $('.capacity', node).textContent = safe(person.capacity || '상태 확인 필요');
-    const stack = $('.task-stack', node);
-    stack.innerHTML = '';
+function renderPeopleCompact(people) {
+  const wrap = $('#peopleCompact');
+  wrap.innerHTML = '';
+  (people || []).slice(0, 9).forEach(person => {
+    const item = document.createElement('article');
+    item.className = 'person-mini';
+    item.dataset.tone = person.tone || 'steady';
     const tasks = person.tasks || [];
-    if (!tasks.length) {
-      const chip = document.createElement('span');
-      chip.className = 'task-chip';
-      chip.textContent = '현재 표시 업무 없음';
-      stack.appendChild(chip);
-    } else {
-      tasks.slice(0, 4).forEach(task => {
-        const chip = document.createElement('span');
-        chip.className = 'task-chip';
-        chip.textContent = `${safe(task.title)} · ${safe(task.status)}`;
-        stack.appendChild(chip);
-      });
-    }
-    grid.appendChild(node);
+    item.innerHTML = `
+      <span class="avatar">${initials(person.name)}</span>
+      <div>
+        <strong>${safe(person.name)}</strong>
+        <p>${tasks[0] ? safe(tasks[0].title) : safe(person.capacity).slice(0, 38)}</p>
+      </div>
+      <em>${tasks.length || 0}</em>
+    `;
+    wrap.appendChild(item);
+  });
+}
+
+function renderPeopleTable(people) {
+  $('#peopleCount').textContent = `${(people || []).length}명`;
+  const rows = $('#peopleRows');
+  rows.innerHTML = '';
+  (people || []).forEach(person => {
+    const tasks = person.tasks || [];
+    const row = document.createElement('tr');
+    row.className = 'person-row';
+    row.dataset.tone = person.tone || 'steady';
+    row.innerHTML = `
+      <td>
+        <div class="person-name">
+          <span class="avatar">${initials(person.name)}</span>
+          <div><strong>${safe(person.name)}</strong><small>${safe(person.role || '팀원')}</small></div>
+        </div>
+      </td>
+      <td>${safe(person.capacity)}</td>
+      <td>${tasks.length ? tasks.map(task => `<span class="task-token">${safe(task.title)} · ${safe(task.status)}</span>`).join('') : '<span class="task-token muted">표시 업무 없음</span>'}</td>
+    `;
+    rows.appendChild(row);
   });
 }
 
@@ -148,12 +181,11 @@ function renderUpdates(updates) {
   list.innerHTML = '';
   (updates || []).forEach(update => {
     const item = document.createElement('article');
-    item.className = 'timeline-item';
-    const heading = document.createElement('strong');
-    heading.textContent = safe(update.heading).replace('2026-06-29 — ', '');
-    const body = document.createElement('p');
-    body.textContent = safe(update.text);
-    item.append(heading, body);
+    item.className = 'update-item';
+    item.innerHTML = `
+      <strong>${safe(update.heading).replace('2026-06-29 — ', '')}</strong>
+      <p>${safe(update.text)}</p>
+    `;
     list.appendChild(item);
   });
 }
@@ -164,8 +196,8 @@ function wireFilters() {
       $$('.filter').forEach(item => item.classList.remove('active'));
       button.classList.add('active');
       const filter = button.dataset.filter;
-      $$('.board-column').forEach(column => {
-        column.hidden = filter !== 'all' && column.dataset.tone !== filter;
+      $$('.project-row').forEach(row => {
+        row.hidden = filter !== 'all' && row.dataset.tone !== filter;
       });
     });
   });
@@ -175,21 +207,24 @@ async function init() {
   const response = await fetch('./data.json', { cache: 'no-store' });
   if (!response.ok) throw new Error(`data.json ${response.status}`);
   const data = await response.json();
+
   document.title = data.meta?.title || '영상팀 운영상황판';
-  renderPills(data);
-  renderKeyChanges(data.keyChanges || []);
-  renderProjects(data.projects || []);
-  renderPeople(data.people || []);
-  renderUpdates(data.recentUpdates || []);
-  wireFilters();
   $('#lastUpdated').textContent = data.meta?.lastUpdated || '';
   $('#designRef').textContent = data.meta?.designReference || '';
+
+  renderSummary(data);
+  renderProjects(data.projects || []);
+  renderKeyChanges(data.keyChanges || []);
+  renderPeopleCompact(data.people || []);
+  renderPeopleTable(data.people || []);
+  renderUpdates(data.recentUpdates || []);
+  wireFilters();
 }
 
 init().catch(error => {
   console.error(error);
   const warning = document.createElement('div');
-  warning.style.cssText = 'margin:16px;padding:16px;border-radius:12px;background:#fff0f0;color:#991b1b;font-weight:700;position:relative;z-index:99;';
+  warning.className = 'load-warning';
   warning.textContent = `데이터를 불러오지 못했습니다: ${safe(error.message)}`;
   document.body.prepend(warning);
 });

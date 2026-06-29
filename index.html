@@ -8,135 +8,151 @@
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <a class="skip-link" href="#projects">프로젝트 보드로 건너뛰기</a>
-  <div class="app-shell">
-    <header id="top" class="ops-header">
-      <a class="brand" href="#top" aria-label="영상팀 운영상황판 홈">
-        <span class="brand-mark">V</span>
-        <span>
+  <a class="skip-link" href="#projectTable">업무 테이블로 건너뛰기</a>
+
+  <div class="ops-os">
+    <aside class="side-rail" aria-label="워크스페이스 네비게이션">
+      <a class="rail-logo" href="#top" aria-label="영상팀 운영상황판 홈">V</a>
+      <nav class="rail-nav" aria-label="빠른 이동">
+        <a class="rail-item active" href="#projectTable" title="업무 테이블"><span>▦</span></a>
+        <a class="rail-item" href="#people" title="팀 배치"><span>◉</span></a>
+        <a class="rail-item" href="#updates" title="변경 로그"><span>≡</span></a>
+        <a class="rail-item" href="./DESIGN_MAPPING.md" title="디자인 근거"><span>⌁</span></a>
+      </nav>
+      <div class="rail-bottom" aria-label="시스템 상태">
+        <span class="rail-status"></span>
+        <span class="rail-mini">RO</span>
+      </div>
+    </aside>
+
+    <div id="top" class="workspace">
+      <header class="topbar">
+        <div class="crumbs" aria-label="현재 위치">
+          <span class="dot"></span>
+          <span>Ops</span>
+          <span>/</span>
           <strong>영상팀 운영상황판</strong>
-          <em>Project · People · Bottleneck</em>
-        </span>
-      </a>
-      <div class="header-meta" aria-label="페이지 정보">
-        <span>읽기 전용</span>
-        <span>GitHub Pages</span>
-        <span id="lastUpdated">업데이트 확인중</span>
-      </div>
-    </header>
-
-    <section class="overview-grid" aria-label="운영 브리핑 요약">
-      <div class="summary-panel">
-        <p class="eyebrow">VIDEO TEAM OPS BOARD</p>
-        <h1>업무 배치와 병목만 빠르게 확인하는 보드</h1>
-        <p class="lede">
-          업로드 수량표가 아니라, 프로젝트 오너·지원 전환·대기/병목 상태를 보는 운영판입니다.
-          첫 화면에서 오늘 바뀐 담당과 막히는 지점을 바로 확인하도록 재구성했습니다.
-        </p>
-        <div id="heroPills" class="metric-strip" aria-label="운영 요약 지표"></div>
-        <p class="source-note">
-          디자인 기준: Airtable DESIGN.md의 흰 캔버스/헤어라인 업무카드, Notion DESIGN.md의 DB 태그/파스텔 카드, Miro DESIGN.md의 sticky note 강조만 적용.
-        </p>
-      </div>
-
-      <aside class="decision-panel" aria-label="오늘 핵심 변경">
-        <div class="panel-title">
-          <span class="panel-dot"></span>
-          <div>
-            <p class="eyebrow">TODAY CHANGES</p>
-            <h2>오늘 핵심 변경</h2>
-          </div>
         </div>
-        <div id="keyChanges" class="sticky-stack"></div>
-      </aside>
-    </section>
-
-    <nav class="board-nav" aria-label="보드 빠른 이동">
-      <a href="#projects">프로젝트 보드</a>
-      <a href="#people">사람별 배치</a>
-      <a href="#updates">변경 로그</a>
-      <a href="./DESIGN_MAPPING.md">디자인 근거</a>
-    </nav>
-
-    <main>
-      <section id="projects" class="section board-section">
-        <div class="section-header">
-          <div>
-            <p class="eyebrow">PROJECTS</p>
-            <h2>프로젝트 보드</h2>
-            <p>병목 → 집중 → 대기 → 진행 순서로 배치했습니다. 각 카드는 담당자와 현재 액션만 남겼습니다.</p>
-          </div>
-          <div class="filter-bar" role="group" aria-label="프로젝트 상태 필터">
-            <button class="filter active" data-filter="all">전체</button>
-            <button class="filter" data-filter="risk">병목</button>
-            <button class="filter" data-filter="focus">집중</button>
-            <button class="filter" data-filter="waiting">대기</button>
-            <button class="filter" data-filter="steady">진행</button>
-          </div>
+        <div class="topbar-actions" aria-label="페이지 정보">
+          <span class="pill ghost">읽기 전용</span>
+          <span class="pill ghost">GitHub Pages</span>
+          <span id="lastUpdated" class="pill strong">업데이트 확인중</span>
         </div>
-        <div id="projectGrid" class="kanban-board" aria-live="polite"></div>
+      </header>
+
+      <section class="summary-strip" aria-label="운영 요약">
+        <div class="title-card">
+          <p class="eyebrow">VIDEO TEAM OPS</p>
+          <h1>업무 OS / 주간 제작 테이블</h1>
+          <p>좌측 네비, 중앙 업무 테이블, 우측 변경·팀 배치 패널로 정리한 고밀도 운영 화면입니다.</p>
+        </div>
+        <div id="summaryCards" class="summary-cards" aria-live="polite"></div>
       </section>
 
-      <section id="people" class="section people-section">
-        <div class="section-header">
-          <div>
-            <p class="eyebrow">PEOPLE</p>
-            <h2>사람별 배치</h2>
-            <p>메인/지원/휴무/병목을 사람 단위로 확인합니다. 업무명은 현재 액션 중심으로 줄였습니다.</p>
+      <main class="workbench-grid">
+        <section class="sheet-panel" aria-labelledby="tableTitle">
+          <div class="sheet-toolbar">
+            <div>
+              <p class="eyebrow">PROJECT DATABASE</p>
+              <h2 id="tableTitle">업무 테이블</h2>
+            </div>
+            <div class="filter-bar" role="group" aria-label="상태 필터">
+              <button class="filter active" data-filter="all">전체</button>
+              <button class="filter" data-filter="risk">병목</button>
+              <button class="filter" data-filter="focus">집중</button>
+              <button class="filter" data-filter="waiting">대기</button>
+              <button class="filter" data-filter="steady">진행</button>
+            </div>
           </div>
-        </div>
-        <div id="peopleGrid" class="people-board" aria-live="polite"></div>
+
+          <div class="sheet-tabs" aria-label="테이블 뷰">
+            <span class="view-tab active">주간 운영</span>
+            <span class="view-tab">마감 임박</span>
+            <span class="view-tab">담당자별</span>
+            <span class="view-tab muted">noindex · public static</span>
+          </div>
+
+          <div class="table-wrap">
+            <table id="projectTable" class="ops-table">
+              <thead>
+                <tr>
+                  <th scope="col">상태</th>
+                  <th scope="col">프로젝트</th>
+                  <th scope="col">담당</th>
+                  <th scope="col">단계</th>
+                  <th scope="col">마감</th>
+                  <th scope="col">오늘 액션</th>
+                  <th scope="col">세부 체크</th>
+                </tr>
+              </thead>
+              <tbody id="projectRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <aside class="right-panel" aria-label="오늘 변경 및 팀 상태">
+          <section class="side-card changes-card">
+            <div class="panel-head">
+              <p class="eyebrow">TODAY CHANGES</p>
+              <h2>오늘 변경</h2>
+            </div>
+            <div id="keyChanges" class="change-list"></div>
+          </section>
+
+          <section class="side-card compact-people">
+            <div class="panel-head row">
+              <div>
+                <p class="eyebrow">PEOPLE</p>
+                <h2>팀 배치</h2>
+              </div>
+              <a href="#people">전체 보기</a>
+            </div>
+            <div id="peopleCompact" class="people-compact-list"></div>
+          </section>
+        </aside>
+      </main>
+
+      <section id="people" class="lower-grid" aria-label="사람별 배치와 변경 로그">
+        <section class="table-card people-card">
+          <div class="panel-head row">
+            <div>
+              <p class="eyebrow">ASSIGNMENT MATRIX</p>
+              <h2>사람별 배치</h2>
+            </div>
+            <span id="peopleCount" class="count-chip">0명</span>
+          </div>
+          <div class="mini-table-wrap">
+            <table class="mini-table">
+              <thead>
+                <tr>
+                  <th>이름</th>
+                  <th>현재 포커스</th>
+                  <th>표시 업무</th>
+                </tr>
+              </thead>
+              <tbody id="peopleRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="updates" class="table-card updates-card">
+          <div class="panel-head row">
+            <div>
+              <p class="eyebrow">CHANGE LOG</p>
+              <h2>최근 반영 로그</h2>
+            </div>
+            <span class="count-chip">log</span>
+          </div>
+          <div id="updatesList" class="update-list"></div>
+        </section>
       </section>
 
-      <section id="updates" class="section updates-section">
-        <div class="section-header compact">
-          <div>
-            <p class="eyebrow">CHANGE LOG</p>
-            <h2>최근 반영 로그</h2>
-          </div>
-        </div>
-        <div id="updatesList" class="timeline"></div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <span>Static briefing · public GitHub Pages · noindex</span>
-      <span id="designRef"></span>
-    </footer>
+      <footer class="footer">
+        <span>Static briefing · public GitHub Pages · noindex</span>
+        <span id="designRef"></span>
+      </footer>
+    </div>
   </div>
-
-  <template id="projectTemplate">
-    <article class="project-card">
-      <div class="card-top">
-        <span class="tone-dot" aria-hidden="true"></span>
-        <span class="status-badge"></span>
-      </div>
-      <h3></h3>
-      <div class="owner-row">
-        <span>담당</span>
-        <strong class="owner"></strong>
-      </div>
-      <div class="meta-pills">
-        <span class="stage-pill"></span>
-        <span class="due-pill"></span>
-      </div>
-      <ul class="project-bullets"></ul>
-    </article>
-  </template>
-
-  <template id="personTemplate">
-    <article class="person-card">
-      <div class="person-main">
-        <div class="avatar"></div>
-        <div>
-          <h3></h3>
-          <p class="role"></p>
-        </div>
-      </div>
-      <p class="capacity"></p>
-      <div class="task-stack"></div>
-    </article>
-  </template>
 
   <script src="./app.js" defer></script>
 </body>

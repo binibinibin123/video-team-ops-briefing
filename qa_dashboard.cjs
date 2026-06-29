@@ -17,19 +17,17 @@ async function inspect(page, targetUrl, viewport, label) {
     const visibleText = document.body.innerText;
     const required = [
       '영상팀 운영상황판',
-      '오늘 핵심 변경',
-      '프로젝트 보드',
+      '업무 테이블',
+      '오늘 변경',
+      '팀 배치',
       '사람별 배치',
-      '병목 주의',
       '쿠쿠홈시스',
       '미닉스',
       '표지영',
-      '스냅스',
-      '이재은',
-      '최유정',
-      'Airtable DESIGN.md',
-      'Notion DESIGN.md',
-      'Miro DESIGN.md'
+      '총 36개 바리에이션',
+      'Airtable',
+      'Notion',
+      'Linear'
     ];
     const missing = required.filter(t => !visibleText.includes(t));
     const overflow = [...document.querySelectorAll('body *')]
@@ -52,10 +50,12 @@ async function inspect(page, targetUrl, viewport, label) {
       title: document.title,
       missing,
       overflow,
-      boardColumns: document.querySelectorAll('.board-column').length,
-      projectCards: document.querySelectorAll('.project-card').length,
-      peopleCards: document.querySelectorAll('.person-card').length,
-      stickyNotes: document.querySelectorAll('.change-item').length,
+      projectRows: document.querySelectorAll('.project-row').length,
+      peopleRows: document.querySelectorAll('.person-row').length,
+      peopleMini: document.querySelectorAll('.person-mini').length,
+      changeCards: document.querySelectorAll('.change-card').length,
+      summaryCards: document.querySelectorAll('.summary-card').length,
+      hasSideRail: Boolean(document.querySelector('.side-rail')),
       h1: document.querySelector('h1')?.innerText,
     };
   });
@@ -67,7 +67,7 @@ async function inspect(page, targetUrl, viewport, label) {
 (async () => {
   const targetUrl = process.argv[2] || 'http://127.0.0.1:8799/index.html';
   const browser = await chromium.launch({ headless: true });
-  const desktop = await inspect(await browser.newPage(), targetUrl, { width: 1440, height: 1200 }, 'desktop');
+  const desktop = await inspect(await browser.newPage(), targetUrl, { width: 1440, height: 1100 }, 'desktop');
   const mobile = await inspect(await browser.newPage(), targetUrl, { width: 390, height: 1100 }, 'mobile');
   await browser.close();
   console.log(JSON.stringify({ targetUrl, checks: [desktop, mobile] }, null, 2));

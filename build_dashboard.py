@@ -264,7 +264,7 @@ def build():
         'meta': {
             'title': '영상팀 운영상황판',
             'lastUpdated': '2026-06-29 · 쿠쿠홈시스/미닉스 마감 일정 반영',
-            'designReference': 'VoltAgent awesome-design-md 직접 적용: Airtable DESIGN.md 업무카드 + Notion DESIGN.md DB 태그 + Miro DESIGN.md sticky note',
+            'designReference': 'VoltAgent awesome-design-md 직접 적용: Airtable DESIGN.md 테이블/헤어라인 + Notion DESIGN.md DB 속성 태그 + Linear.app DESIGN.md 다크 사이드레일',
             'privacyNote': 'GitHub Pages 공개 링크용 정적 브리핑. 검색 노출 최소화를 위해 noindex 메타 적용.',
         },
         'stats': stats,
