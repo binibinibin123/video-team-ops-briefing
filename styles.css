@@ -493,9 +493,11 @@ h1 {
 }
 .action-cell,
 .detail-cell {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: keep-all;
 }
 .detail-cell { color: var(--muted); }
 

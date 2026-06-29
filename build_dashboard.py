@@ -50,7 +50,7 @@ PROJECT_OVERRIDES = {
     '스냅스': {'tone': 'waiting', 'bullets': ['표지영 쿠쿠홈시스 메인 등록으로 우선순위 재확인 필요.', '기존 스냅스 원본 6개 일정은 별도 확인.', '신유빈은 지원/관리 기록 유지.']},
     '비더후드': {'tone': 'risk', 'bullets': ['표지영 지원 중단.', '정희헌 메인 중심으로 재정리.', '지원 공백 체크 필요.']},
     '벤슨': {'tone': 'steady', 'bullets': ['여기성 메인 중심.', '이재은 지원은 종료.', '신규 소구는 수요일부터 반영 예정.']},
-    '최유정': {'tone': 'risk', 'bullets': ['김경은 휴무.', '정희헌과 이재은이 지원중.', '세이브본 부족 체크 필요.']},
+    '최유정': {'tone': 'risk', 'status': '긴급 · 편집 · 잔여 확인', 'stage': '편집/잔여 확인', 'bullets': ['김경은 휴무.', '오늘 지원분 종료. 이후 잔여는 정희헌 중심 확인.', '세이브본 부족 체크 필요.']},
     '동아제약': {'tone': 'waiting', 'bullets': ['남은 기획/자료 수급 대기.', '자료 들어오면 정희헌 제작 대응.', '비더후드와 병행이라 병목 주의.']},
     '삼양': {'tone': 'steady', 'bullets': ['탱글 3번 바리에이션 완료.', '4번 컨펌 추적.', '5/6번 후속 제작 병행.']},
     '미닉스': {
@@ -64,7 +64,23 @@ PROJECT_OVERRIDES = {
     '볼보': {'tone': 'steady', 'bullets': ['최성진 메인으로 계속 진행.', '별도 지원 이슈 없음.']},
     'CJ': {'tone': 'steady', 'bullets': ['한은지 메인/현재진행.', '특이 리스크 없음.']},
     '아이돌종합': {'tone': 'waiting', 'bullets': ['김경은 휴무로 대기.', '복귀 후 재확인 필요.']},
-    '듀오타이트': {'tone': 'waiting', 'bullets': ['이재은 메인 배정.', '현재 최유정 지원으로 착수 지연 가능.']},
+    '듀오타이트': {
+        'owner': '이재은',
+        'tone': 'focus',
+        'status': '긴급 · 기획/메인영상 · 메인담당',
+        'stage': '기획/메인영상',
+        'priority': '긴급',
+        'due': '2026-07-03',
+        'bullets': [
+            '이재은 메인 담당자로 투입.',
+            '6/30(화) 기획 착수.',
+            '메인영상 9건: 7/3(금)까지 완료 목표.',
+            '7/13(월) 첫 라이브 목표. 컨펌이 빨라지면 일정 단축 가능.',
+            '1주차 최소 45건, 2주차 최소 47건 발행.',
+            '3주차는 조회수 추이를 반영해 추가 바리에이션 제작/발행.',
+            '최소 92건 발행, 목표 조회수 276,000.',
+        ]
+    },
     '뷰엑스 홍보영상': {'tone': 'focus', 'bullets': ['신유빈 관리중.', '팀 업무 분배와 함께 체크.']},
     '헤븐리젤리': {'tone': 'waiting', 'bullets': ['표지영 쿠쿠홈시스 집중 마감 이후 재확인.', '후속 우선순위 확인 필요.']},
     '한손한끼': {'tone': 'steady', 'bullets': ['오너/세부 제작 상태 확인 필요.', '반복 운영 항목으로 별도 체크.']},
@@ -91,10 +107,10 @@ PROJECT_OVERRIDES = {
 
 PEOPLE_OVERRIDES = {
     '신유빈': '팀 리드. 업무 분배/우선순위 판단, 스냅스 지원·관리 기록 유지, 쿠쿠홈시스/미닉스 주간 마감 체크, 뷰엑스 홍보영상 관리중.',
-    '이재은': '벤슨 지원 종료. 현재 최유정 지원중. 듀오타이트 메인 착수는 최유정 지원 이후로 밀릴 수 있음.',
+    '이재은': '오늘 업무 종료 후 듀오타이트 메인 담당자로 전환. 6/30(화) 기획 착수, 7/3(금)까지 메인영상 9건, 7/13(월) 첫 라이브 목표. 1주차 최소 45건/2주차 최소 47건, 최소 92건 발행과 목표 조회수 276,000 기준.',
     '여기성': '벤슨 메인. 스냅스 메인에서 해제되어 벤슨 운영과 신규 소구 반영에 집중.',
     '표지영': '쿠쿠홈시스 메인 등록. 원본 1개는 7/1(수) 퇴근 전, 바리에이션 14개는 7/3(금) 퇴근 전까지 완료. 스냅스 후속 우선순위는 재확인 필요.',
-    '정희헌': '비더후드 메인. 최유정은 이재은도 합류했지만, 동아제약 자료 수급 후 제작까지 겹쳐 병목 주의.',
+    '정희헌': '비더후드 메인. 최유정 잔여 지원과 동아제약 자료 수급 후 제작이 겹쳐 병목 주의.',
     '최성진': '볼보 메인으로 계속 진행.',
     '한은지': 'CJ 메인으로 계속 진행.',
     '김경은': '현재 휴무. 아이돌종합/최유정 메인이나 최유정은 지원 인력으로 커버 중.',
@@ -216,7 +232,7 @@ def build():
             'priority': override.get('priority') or p.get('priority') or '미정',
             'due': override.get('due') or p.get('upload_due_date') or '미정',
             'tone': override.get('tone') or classify_project(p),
-            'bullets': bullets[:4] or ['세부 상태 확인 필요'],
+            'bullets': bullets[:7] or ['세부 상태 확인 필요'],
         })
 
     people_cards = []
@@ -233,6 +249,17 @@ def build():
                 'priority': t.get('priority',''),
                 'due': t.get('due_date',''),
             })
+        if name == '이재은':
+            task_summaries = [
+                {'title': '듀오타이트 기획 착수', 'status': '6/30 착수', 'priority': '긴급', 'due': '2026-06-30'},
+                {'title': '듀오타이트 메인영상 9건', 'status': '7/3까지', 'priority': '긴급', 'due': '2026-07-03'},
+                {'title': '듀오타이트 1차 라이브/바리에이션', 'status': '7/13 목표', 'priority': '높음', 'due': '2026-07-13'},
+            ]
+        elif name == '정희헌':
+            for task in task_summaries:
+                if task['title'] == '최유정 지원':
+                    task['title'] = '최유정 잔여 지원'
+                    task['status'] = '잔여 확인'
         capacity = PEOPLE_OVERRIDES.get(name) or compact_note(m.get('capacity_notes') or m.get('notes') or '상태 확인 필요', 180)
         people_cards.append({
             'name': name,
@@ -243,27 +270,31 @@ def build():
         })
 
     key_changes = [
-        {'label': '쿠쿠홈시스', 'title': '표지영 메인 등록', 'body': '원본 영상 1개는 7/1(수) 퇴근 전, 바리에이션 14개는 7/3(금) 퇴근 전까지 완료.'},
-        {'label': '미닉스', 'title': '원본 4개 컨펌 완료', 'body': '6/30(화) 원본 4개 발행. 각 원본당 9개씩 총 36개 바리에이션 진행.'},
-        {'label': '미닉스 일정', 'title': '수~토 업로드 / 금요일 제작 완료', 'body': '7/1(수)부터 7/4(토)까지 하루 9개 업로드 기준. 제작·검수는 7/3(금) 퇴근 전까지 끝내야 함.'},
+        {'label': '오늘 업무', 'title': '6/29 업무 종료 처리', 'body': '오늘 업무는 종료 상태로 기록. 이후 새 착수 포커스는 듀오타이트로 전환.'},
+        {'label': '듀오타이트', 'title': '이재은 메인 담당자 투입', 'body': '6/30(화) 기획 착수, 메인영상 9건은 7/3(금)까지 완료 목표.'},
+        {'label': '듀오타이트 목표', 'title': '7/13 첫 라이브 목표', 'body': '1주차 최소 45건, 2주차 최소 47건. 최소 92건 발행과 목표 조회수 276,000 기준.'},
     ]
 
-    # Recent operational bullets from logs
-    recent_updates = extract_latest_markdown(BRIEFINGS, '이재은 지원 전환 반영', max_lines=6)
-    if not recent_updates:
-        recent_updates = extract_latest_markdown(BRIEFINGS, None, max_lines=6)
+    # Latest operational bullets. Keep static overrides first so the generated
+    # public briefing does not regress when older source logs are used.
+    recent_updates = [
+        {'heading': '2026-06-29 — 오늘 업무 종료', 'text': '6/29 당일 업무는 종료 상태로 기록하고, 이후 새 착수 포커스는 듀오타이트로 전환.'},
+        {'heading': '2026-06-29 — 듀오타이트 메인담당 전환', 'text': '이재은: 듀오타이트 메인 담당자로 투입. 6/30(화) 기획 착수, 메인영상 9건은 7/3(금)까지 완료 목표.'},
+        {'heading': '2026-06-29 — 듀오타이트 발행/조회수 목표', 'text': '7/13(월) 첫 라이브 목표. 1주차 최소 45건, 2주차 최소 47건, 3주차는 조회수 추이 반영 추가 바리에이션. 최소 92건/목표 조회수 276,000.'},
+    ]
+    recent_updates.extend(extract_latest_markdown(BRIEFINGS, None, max_lines=3))
 
     stats = {
-        'activeProjects': len([p for p in projects_raw if p.get('status') in {'진행중','대기','컨펌대기'}]),
-        'activeTasks': len(active_tasks),
-        'riskProjects': len([p for p in projects_raw if classify_project(p) == 'risk']),
-        'teamMembers': len([m for m in members_raw if str(m.get('active','')).upper() == 'TRUE']),
+        'activeProjects': len(project_cards),
+        'activeTasks': sum(len(person['tasks']) for person in people_cards),
+        'riskProjects': len([p for p in project_cards if p.get('tone') == 'risk']),
+        'teamMembers': len(people_cards),
     }
 
     data = {
         'meta': {
             'title': '영상팀 운영상황판',
-            'lastUpdated': '2026-06-29 · 쿠쿠홈시스/미닉스 마감 일정 반영',
+            'lastUpdated': '2026-06-29 · 오늘 업무 종료/듀오타이트 재은 메인 일정 반영',
             'designReference': 'VoltAgent awesome-design-md 직접 적용: Airtable DESIGN.md 테이블/헤어라인 + Notion DESIGN.md DB 속성 태그 + Linear.app DESIGN.md 다크 사이드레일',
             'privacyNote': 'GitHub Pages 공개 링크용 정적 브리핑. 검색 노출 최소화를 위해 noindex 메타 적용.',
         },
