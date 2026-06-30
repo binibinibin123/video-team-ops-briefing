@@ -25,7 +25,7 @@ async function inspect(page, targetUrl, viewport, label) {
       '미닉스',
       '표지영',
       '듀오타이트',
-      '이재은 메인 담당자 투입',
+      '이재은 메인',
       '기획팀 기획안은 6/30 오후 전달 예정',
       '벤슨 오전 지원',
       '메인영상 9건',
