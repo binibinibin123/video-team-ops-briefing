@@ -190,6 +190,48 @@ function renderUpdates(updates) {
   });
 }
 
+function renderCalendar(days) {
+  const wrap = $('#calendarGrid');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+
+  (days || []).forEach(day => {
+    const card = document.createElement('article');
+    card.className = `calendar-day${day.isToday ? ' today' : ''}`;
+    const events = (day.events || []).slice(0, 5);
+    const changes = (day.changes || []).slice(0, 3);
+    card.innerHTML = `
+      <div class="calendar-head">
+        <div>
+          <span>${safe(day.weekday)}</span>
+          <strong>${safe(day.label)}</strong>
+        </div>
+        <em>${safe(day.load)}</em>
+      </div>
+      <div class="calendar-block">
+        <small>누가 뭐 했는지</small>
+        ${events.length ? events.map(event => `
+          <div class="calendar-event">
+            <b>${safe(event.person)}</b>
+            <p>${safe(event.project)} · ${safe(event.title)}</p>
+            <i>${safe(event.status)}</i>
+          </div>
+        `).join('') : '<p class="calendar-empty">표시 업무 없음</p>'}
+      </div>
+      <div class="calendar-block changes">
+        <small>변경 로그</small>
+        ${changes.length ? changes.map(change => `
+          <div class="calendar-change">
+            <b>${safe(change.time || 'log')}</b>
+            <p>${safe(change.text)}</p>
+          </div>
+        `).join('') : '<p class="calendar-empty">변경 로그 없음</p>'}
+      </div>
+    `;
+    wrap.appendChild(card);
+  });
+}
+
 function wireFilters() {
   $$('.filter').forEach(button => {
     button.addEventListener('click', () => {
@@ -218,6 +260,7 @@ async function init() {
   renderPeopleCompact(data.people || []);
   renderPeopleTable(data.people || []);
   renderUpdates(data.recentUpdates || []);
+  renderCalendar(data.changeCalendar || []);
   wireFilters();
 }
 

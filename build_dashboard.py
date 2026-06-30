@@ -12,6 +12,7 @@ OUT = BASE / 'web_dashboard'
 
 PROJECTS = BASE / 'video_projects.csv'
 TASKS = BASE / 'tasks.csv'
+SCHEDULE = BASE / 'upload_schedule.csv'
 MEMBERS = BASE / 'team_members.csv'
 DECISIONS = BASE / 'decision_log.md'
 BRIEFINGS = BASE / 'daily_briefings.md'
@@ -48,9 +49,9 @@ def split_notes(text: str, limit_each: int = 95, max_items: int = 3):
 
 PROJECT_OVERRIDES = {
     '스냅스': {'tone': 'waiting', 'bullets': ['표지영 쿠쿠홈시스 메인 등록으로 우선순위 재확인 필요.', '기존 스냅스 원본 6개 일정은 별도 확인.', '신유빈은 지원/관리 기록 유지.']},
-    '비더후드': {'tone': 'risk', 'bullets': ['표지영 지원 중단.', '정희헌 메인 중심으로 재정리.', '지원 공백 체크 필요.']},
-    '벤슨': {'tone': 'focus', 'bullets': ['여기성 메인 중심.', '6/30 오전 현재 이재은 지원 중.', '오후에는 이재은이 듀오타이트로 전환 예정.', '신규 소구는 수요일부터 반영 예정.']},
-    '최유정': {'tone': 'risk', 'status': '긴급 · 편집 · 잔여 확인', 'stage': '편집/잔여 확인', 'bullets': ['김경은 오늘 출근.', '정희헌 중심으로 잔여/세이브본 확인 필요.', '이재은은 현재 벤슨 지원 후 오후 듀오타이트 예정이라 추가 지원 여력 낮음.', '김경은 7/7 마지막 출근 예정이라 인수인계 필요.']},
+    '비더후드': {'tone': 'risk', 'bullets': ['정희헌 메인.', '6/30 한은지 지원 중.', '표지영 지원 중단 후 한은지로 단기 보강.', '정희헌은 최유정/동아제약 병행이라 병목 주의.']},
+    '벤슨': {'tone': 'focus', 'bullets': ['여기성 메인 중심.', '이재은 지원은 마무리 단계.', '이재은은 곧 듀오타이트 제작으로 전환 예정.', '신규 소구는 수요일부터 반영 예정.']},
+    '최유정': {'tone': 'risk', 'status': '긴급 · 편집 · 잔여 확인', 'stage': '편집/잔여 확인', 'bullets': ['김경은 오늘 출근.', '정희헌 중심으로 잔여/세이브본 확인 필요.', '이재은은 벤슨 지원 마무리 후 듀오타이트 제작 예정이라 추가 지원 여력 낮음.', '김경은 7/7 마지막 출근 예정이라 인수인계 필요.']},
     '동아제약': {'tone': 'waiting', 'bullets': ['남은 기획/자료 수급 대기.', '자료 들어오면 정희헌 제작 대응.', '비더후드와 병행이라 병목 주의.']},
     '삼양': {'tone': 'steady', 'bullets': ['탱글 3번 바리에이션 완료.', '4번 컨펌 추적.', '5/6번 후속 제작 병행.']},
     '미닉스': {
@@ -62,19 +63,19 @@ PROJECT_OVERRIDES = {
         'bullets': ['원본 영상 4개 컨펌 완료.', '6/30(화) 원본 4개 발행.', '각 원본당 9개씩 총 36개 바리에이션.', '7/1~7/4 하루 9개 업로드, 제작 완료는 7/3(금) 퇴근 전.']
     },
     '볼보': {'tone': 'focus', 'status': '높음 · 제작/바리에이션 · 진행중', 'stage': '제작/바리에이션', 'priority': '높음', 'due': '2026-06-30', 'bullets': ['최성진 메인으로 진행.', '프로그램을 이용한 바리에이션 영상 25개 오늘 제작 중.', '산출물 품질/중복 검수 체크 필요.']},
-    'CJ': {'tone': 'steady', 'bullets': ['한은지 메인/현재진행.', '특이 리스크 없음.']},
+    'CJ': {'tone': 'steady', 'bullets': ['한은지 메인.', '월/수/금 CJ 업무 고정.', '화/목은 타 프로젝트 지원 가능.', '6/30 화요일은 비더후드 지원 중.']},
     '아이돌종합': {'tone': 'waiting', 'bullets': ['김경은 오늘 출근.', '7/7 마지막 출근 예정.', '인수인계/후임 오너 확인 필요.']},
     '듀오타이트': {
         'owner': '이재은',
         'tone': 'focus',
-        'status': '긴급 · 기획대기/오후착수 · 메인담당',
-        'stage': '기획대기/오후착수',
+        'status': '긴급 · 기획 2건 완료/제작 직전 · 메인담당',
+        'stage': '기획 2건 완료/제작 직전',
         'priority': '긴급',
         'due': '2026-07-03',
         'bullets': [
-            '이재은 메인. 오전 현재 벤슨 지원 중.',
-            '기획팀 기획안은 6/30 오후 전달 예정 → 오후 착수 예상.',
+            '기획 2건 완료. 이재은은 벤슨 지원 마무리 후 곧 제작 착수 예상.',
             '메인영상 9건: 7/3(금)까지 완료 목표.',
+            '잔여 7건 기획/제작 속도 확인 필요.',
             '7/13(월) 첫 라이브 목표. 컨펌이 빨라지면 일정 단축 가능.',
             '1주차 45건 + 2주차 47건 = 최소 92건 발행.',
             '3주차는 조회수 추이를 반영해 추가 바리에이션 제작/발행.',
@@ -114,12 +115,12 @@ PROJECT_OVERRIDES = {
 
 PEOPLE_OVERRIDES = {
     '신유빈': '팀 리드. 업무 분배/우선순위 판단, 스냅스 지원·관리 기록 유지, 쿠쿠홈시스/미닉스 주간 마감 체크, 뷰엑스 홍보영상 관리중.',
-    '이재은': '현재 벤슨 지원 중. 기획팀에서 듀오타이트 기획안이 6/30 오후 전달 예정이라 오후부터 듀오타이트 전환 예상. 7/3(금)까지 메인영상 9건, 7/13(월) 첫 라이브 목표. 1주차 최소 45건/2주차 최소 47건, 최소 92건 발행과 목표 조회수 276,000 기준.',
-    '여기성': '벤슨 메인. 6/30 유20 피크에 오전 이재은 지원 중이나 오후부터는 이재은이 듀오타이트로 전환 예정. 신규 소구 반영까지 체크.',
+    '이재은': '벤슨 지원 마무리 단계. 듀오타이트 기획 2건 완료되어 곧 제작 착수 예상. 7/3(금)까지 메인영상 9건, 7/13(월) 첫 라이브 목표. 1주차 최소 45건/2주차 최소 47건, 최소 92건 발행과 목표 조회수 276,000 기준.',
+    '여기성': '벤슨 메인. 6/30 유20 피크에 이재은 지원은 마무리 단계이며, 이후 이재은은 듀오타이트로 전환 예정. 신규 소구 반영까지 체크.',
     '표지영': '쿠쿠홈시스 메인 등록. 원본 1개는 7/1(수) 퇴근 전, 바리에이션 14개는 7/3(금) 퇴근 전까지 완료. 스냅스 후속 우선순위는 재확인 필요.',
-    '정희헌': '비더후드 메인. 최유정 잔여 지원과 동아제약 자료 수급 후 제작이 겹쳐 병목 주의.',
+    '정희헌': '비더후드 메인. 6/30 한은지 지원 투입으로 단기 보강됐지만, 최유정 잔여 지원과 동아제약 자료 수급 후 제작이 겹쳐 병목 주의.',
     '최성진': '볼보 메인. 6/30 프로그램을 이용한 바리에이션 영상 25개 제작 중. 산출물 품질/중복 검수 체크 필요.',
-    '한은지': 'CJ 메인으로 계속 진행.',
+    '한은지': 'CJ 월/수/금 고정 업무. 화/목은 웬만하면 타 프로젝트 지원 가능. 6/30 화요일은 비더후드 지원 중.',
     '김경은': '오늘 출근. 아이돌종합/최유정 메인. 2026-07-07 마지막 출근 예정이라 인수인계 필요.',
     '조성주': '미닉스 원본 4개 컨펌 완료. 6/30(화) 원본 4개 발행, 7/1~7/4 하루 9개 업로드. 총 36개 바리에이션 제작·검수는 7/3(금) 퇴근 전 완료 필요.',
 }
@@ -205,10 +206,97 @@ def extract_latest_markdown(path: Path, heading_contains: str | None = None, max
     return [{'heading': heading, 'text': b} for b in bullets]
 
 
+
+
+WEEKDAY_KO = ['월', '화', '수', '목', '금', '토', '일']
+
+
+def valid_date(value: str) -> bool:
+    return bool(re.match(r'^\d{4}-\d{2}-\d{2}$', value or ''))
+
+
+def date_label(value: str) -> str:
+    if not valid_date(value):
+        return value or '미정'
+    dt = datetime.strptime(value, '%Y-%m-%d')
+    return f"{dt.month}/{dt.day}({WEEKDAY_KO[dt.weekday()]})"
+
+
+def parse_decision_changes(path: Path):
+    grouped = {}
+    if not path.exists():
+        return grouped
+    for raw in path.read_text(encoding='utf-8').splitlines():
+        line = raw.strip()
+        m = re.match(r'^-\s+(\d{4}-\d{2}-\d{2})(?:\s+([^:]+))?:\s*(.+)$', line)
+        if not m:
+            continue
+        date, time_part, body = m.groups()
+        label = (time_part or '').replace('KST', '').strip()
+        grouped.setdefault(date, []).append({'time': label, 'text': compact_note(body, 150)})
+    return grouped
+
+
+def build_change_calendar(tasks_raw, schedule_raw, projects_raw):
+    project_by_id = {p.get('project_id'): p.get('project_title') for p in projects_raw}
+    changes_by_date = parse_decision_changes(DECISIONS)
+    loads = {}
+    dates = set(changes_by_date.keys())
+    for row in schedule_raw:
+        date = row.get('date', '')
+        if not valid_date(date):
+            continue
+        dates.add(date)
+        if str(row.get('included_in_video_team', '')).upper() == 'TRUE' and row.get('platform') == '유튜브':
+            try:
+                loads[date] = loads.get(date, 0) + int(row.get('count') or 0)
+            except ValueError:
+                pass
+
+    events_by_date = {}
+    for t in tasks_raw:
+        if t.get('status') == '취소':
+            continue
+        date = t.get('due_date') if valid_date(t.get('due_date','')) else t.get('updated_at')
+        if not valid_date(date):
+            continue
+        dates.add(date)
+        event = {
+            'person': t.get('assignee') or '미정',
+            'project': project_by_id.get(t.get('project_id'), t.get('project_id') or '미정'),
+            'title': display_task_title(t.get('task_title','')),
+            'status': t.get('status') or '미정',
+            'priority': t.get('priority') or '미정',
+        }
+        events_by_date.setdefault(date, []).append(event)
+
+    days = []
+    for date in sorted(d for d in dates if valid_date(d)):
+        events = events_by_date.get(date, [])
+        # Keep the calendar dense: urgent/high/current support items first.
+        def event_rank(e):
+            score = 0
+            if '긴급' in e.get('priority',''): score -= 50
+            if '높음' in e.get('priority',''): score -= 30
+            if '진행' in e.get('status',''): score -= 10
+            return score, e.get('person',''), e.get('title','')
+        events = sorted(events, key=event_rank)
+        days.append({
+            'date': date,
+            'label': date_label(date),
+            'weekday': date_label(date).split('(')[-1].rstrip(')') if valid_date(date) else '',
+            'load': f"유{loads[date]}" if date in loads else '물량 미정',
+            'isToday': date == '2026-06-30',
+            'events': events[:8],
+            'changes': changes_by_date.get(date, [])[-5:],
+        })
+    return days
+
 def build():
     projects_raw = read_csv(PROJECTS)
     tasks_raw = read_csv(TASKS)
     members_raw = read_csv(MEMBERS)
+    schedule_raw = read_csv(SCHEDULE) if SCHEDULE.exists() else []
 
     # Active tasks by assignee/project
     active_tasks = [t for t in tasks_raw if t.get('status') not in {'완료', '취소'}]
@@ -258,8 +346,8 @@ def build():
             })
         if name == '이재은':
             task_summaries = [
-                {'title': '벤슨 오전 지원', 'status': '진행중', 'priority': '높음', 'due': '2026-06-30'},
-                {'title': '듀오타이트 기획안 수급/오후 착수', 'status': '오후 예정', 'priority': '긴급', 'due': '2026-06-30'},
+                {'title': '벤슨 지원 마무리', 'status': '진행중', 'priority': '높음', 'due': '2026-06-30'},
+                {'title': '듀오타이트 기획 2건 확보', 'status': '제작 직전', 'priority': '긴급', 'due': '2026-06-30'},
                 {'title': '듀오타이트 메인영상 9건', 'status': '7/3까지', 'priority': '긴급', 'due': '2026-07-03'},
             ]
         elif name == '정희헌':
@@ -277,10 +365,10 @@ def build():
         })
 
     key_changes = [
-        {'label': '이재은', 'title': '벤슨 오전 지원 → 듀오타이트 오후 착수', 'body': '현재 벤슨 지원 중. 기획팀 듀오타이트 기획안은 오후 전달 예정이라 오후부터 듀오타이트 전환 예상.'},
+        {'label': '한은지', 'title': 'CJ 월/수/금 고정 · 화/목 지원 가능', 'body': '오늘 6/30(화)은 비더후드 지원 중. 비더후드 정희헌 병목을 단기 보강.'},
+        {'label': '듀오타이트', 'title': '기획 2건 완료 · 제작 전환 임박', 'body': '이재은은 벤슨 지원 마무리 후 곧 듀오타이트 제작 착수 예상. 7/3(금) 메인영상 9건 마감 유지.'},
         {'label': '볼보', 'title': '프로그램 바리에이션 25개 제작 중', 'body': '최성진이 오늘 프로그램을 이용한 바리에이션 영상 25개 제작 중. 품질/중복 검수 필요.'},
         {'label': '한손한끼', 'title': '일단 종료 · 운영 제외', 'body': '프로젝트 상태를 완료/종료로 변경. 6/30~7/4 반복 유5 물량은 영상팀 부하 계산에서 제외.'},
-        {'label': '듀오타이트', 'title': '기획안 오후 도착 후 착수', 'body': '이재은 메인. 오전은 벤슨 지원, 오후 기획안 수급 후 메인영상 9건을 7/3(금)까지 완료 목표.'},
         {'label': '미닉스', 'title': '컨펌 완료 · 발행 페이즈', 'body': '원본 4개 컨펌 완료. 6/30 원본 4개 발행 후 7/1~7/4 하루 9개씩 바리에이션 발행.'},
         {'label': '김경은', 'title': '오늘 출근 · 7/7 마지막 출근', 'body': '6/29 휴무였고 6/30 출근. 최유정/아이돌종합 인수인계 플랜 필요.'},
         {'label': '듀오타이트 목표', 'title': '7/13 첫 라이브 목표', 'body': '1주차 최소 45건, 2주차 최소 47건. 최소 92건 발행과 목표 조회수 276,000 기준.'},
@@ -289,11 +377,12 @@ def build():
     # Latest operational bullets. Keep static overrides first so the generated
     # public briefing does not regress when older source logs are used.
     recent_updates = [
-        {'heading': '2026-06-30 10:53 — 이재은 벤슨 지원/듀오타이트 오후 착수', 'text': '이재은은 현재 벤슨 지원 중. 기획팀에서 듀오타이트 기획안이 오후 전달 예정이라 오후부터 듀오타이트 착수 예상.'},
+        {'heading': '2026-06-30 14:00 — 한은지 비더후드 지원', 'text': '한은지는 보통 월/수/금 CJ 고정 업무. 화/목은 타 프로젝트 지원 가능하며, 오늘 6/30(화)은 비더후드 지원 중.'},
+        {'heading': '2026-06-30 13:44 — 듀오타이트 기획 2건 완료', 'text': '듀오타이트 기획 2건 완료. 이재은은 벤슨 지원 마무리 후 곧 듀오타이트 제작 착수 예상.'},
         {'heading': '2026-06-30 10:53 — 볼보 바리에이션 제작', 'text': '최성진이 프로그램을 이용한 볼보 바리에이션 영상 25개를 오늘 제작 중. 산출물 품질/중복 검수 체크 필요.'},
         {'heading': '2026-06-30 — 한손한끼 종료 반영', 'text': '한손한끼는 일단 종료. 프로젝트 상태를 완료/종료로 변경하고, 6/30~7/4 반복 유5 물량은 영상팀 부하 계산에서 제외.'},
         {'heading': '2026-06-30 — 오늘 업무 종료', 'text': '6/29 당일 업무는 종료 상태로 기록하고, 이후 새 착수 포커스는 듀오타이트로 전환.'},
-        {'heading': '2026-06-30 — 듀오타이트 메인담당 전환', 'text': '이재은: 듀오타이트 메인 담당자. 6/30 오전은 벤슨 지원 중이며, 기획안 오후 도착 후 메인영상 9건을 7/3(금)까지 완료 목표.'},
+        {'heading': '2026-06-30 — 듀오타이트 메인담당 전환', 'text': '이재은: 듀오타이트 메인 담당자. 기획 2건 완료, 벤슨 지원 마무리 후 메인영상 9건 제작 착수 예상. 7/3(금) 완료 목표.'},
         {'heading': '2026-06-30 — 미닉스 컨펌 완료', 'text': '미닉스 원본 4개 컨펌 완료. 6/30 원본 4개 발행 후 7/1~7/4 하루 9개씩 바리에이션 발행.'},
         {'heading': '2026-06-30 — 김경은 출근/퇴사 예정 반영', 'text': '김경은은 6/29 휴무였고 6/30 출근. 2026-07-07 마지막 출근 예정으로 최유정/아이돌종합 인수인계 필요.'},
         {'heading': '2026-06-30 — 듀오타이트 발행/조회수 목표', 'text': '7/13(월) 첫 라이브 목표. 1주차 최소 45건, 2주차 최소 47건, 3주차는 조회수 추이 반영 추가 바리에이션. 최소 92건/목표 조회수 276,000.'},
@@ -310,7 +399,7 @@ def build():
     data = {
         'meta': {
             'title': '영상팀 운영상황판',
-            'lastUpdated': '2026-06-30 10:53 KST · 이재은 벤슨 지원/듀오타이트 오후 착수/볼보 25개 제작 반영',
+            'lastUpdated': '2026-06-30 14:00 KST · 한은지 비더후드 지원/듀오타이트 기획 2건 완료/캘린더 로그 탭 반영',
             'designReference': 'VoltAgent awesome-design-md 직접 적용: Airtable DESIGN.md 테이블/헤어라인 + Notion DESIGN.md DB 속성 태그 + Linear.app DESIGN.md 다크 사이드레일',
             'privacyNote': 'GitHub Pages 공개 링크용 정적 브리핑. 검색 노출 최소화를 위해 noindex 메타 적용.',
         },
@@ -319,6 +408,7 @@ def build():
         'projects': project_cards,
         'people': people_cards,
         'recentUpdates': recent_updates,
+        'changeCalendar': build_change_calendar(tasks_raw, schedule_raw, projects_raw),
     }
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / 'data.json').write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding='utf-8')
