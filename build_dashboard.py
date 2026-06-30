@@ -83,7 +83,14 @@ PROJECT_OVERRIDES = {
     },
     '뷰엑스 홍보영상': {'tone': 'focus', 'bullets': ['신유빈 관리중.', '팀 업무 분배와 함께 체크.']},
     '헤븐리젤리': {'tone': 'waiting', 'bullets': ['표지영 쿠쿠홈시스 집중 마감 이후 재확인.', '후속 우선순위 확인 필요.']},
-    '한손한끼': {'tone': 'steady', 'bullets': ['오너/세부 제작 상태 확인 필요.', '반복 운영 항목으로 별도 체크.']},
+    '한손한끼': {
+        'tone': 'waiting',
+        'status': '종료 · 운영 제외',
+        'stage': '종료',
+        'priority': '낮음',
+        'due': '미정',
+        'bullets': ['일단 종료로 반영.', '6/30~7/4 반복 유5 물량은 영상팀 부하 계산에서 제외.']
+    },
     '쿠쿠홈시스': {
         'owner': '표지영',
         'tone': 'focus',
@@ -271,6 +278,7 @@ def build():
 
     key_changes = [
         {'label': '오늘 업무', 'title': '6/29 업무 종료 처리', 'body': '오늘 업무는 종료 상태로 기록. 이후 새 착수 포커스는 듀오타이트로 전환.'},
+        {'label': '한손한끼', 'title': '일단 종료 · 운영 제외', 'body': '프로젝트 상태를 완료/종료로 변경. 6/30~7/4 반복 유5 물량은 영상팀 부하 계산에서 제외.'},
         {'label': '듀오타이트', 'title': '이재은 메인 담당자 투입', 'body': '6/30(화) 기획 착수, 메인영상 9건은 7/3(금)까지 완료 목표.'},
         {'label': '미닉스', 'title': '컨펌 완료 · 발행 페이즈', 'body': '원본 4개 컨펌 완료. 6/30 원본 4개 발행 후 7/1~7/4 하루 9개씩 바리에이션 발행.'},
         {'label': '김경은', 'title': '오늘 출근 · 7/7 마지막 출근', 'body': '6/29 휴무였고 6/30 출근. 최유정/아이돌종합 인수인계 플랜 필요.'},
@@ -280,6 +288,7 @@ def build():
     # Latest operational bullets. Keep static overrides first so the generated
     # public briefing does not regress when older source logs are used.
     recent_updates = [
+        {'heading': '2026-06-30 — 한손한끼 종료 반영', 'text': '한손한끼는 일단 종료. 프로젝트 상태를 완료/종료로 변경하고, 6/30~7/4 반복 유5 물량은 영상팀 부하 계산에서 제외.'},
         {'heading': '2026-06-30 — 오늘 업무 종료', 'text': '6/29 당일 업무는 종료 상태로 기록하고, 이후 새 착수 포커스는 듀오타이트로 전환.'},
         {'heading': '2026-06-30 — 듀오타이트 메인담당 전환', 'text': '이재은: 듀오타이트 메인 담당자로 투입. 6/30(화) 기획 착수, 메인영상 9건은 7/3(금)까지 완료 목표.'},
         {'heading': '2026-06-30 — 미닉스 컨펌 완료', 'text': '미닉스 원본 4개 컨펌 완료. 6/30 원본 4개 발행 후 7/1~7/4 하루 9개씩 바리에이션 발행.'},
@@ -298,7 +307,7 @@ def build():
     data = {
         'meta': {
             'title': '영상팀 운영상황판',
-            'lastUpdated': '2026-06-30 · 미닉스/김경은/듀오타이트 정정 반영',
+            'lastUpdated': '2026-06-30 · 한손한끼 종료/미닉스/김경은/듀오타이트 정정 반영',
             'designReference': 'VoltAgent awesome-design-md 직접 적용: Airtable DESIGN.md 테이블/헤어라인 + Notion DESIGN.md DB 속성 태그 + Linear.app DESIGN.md 다크 사이드레일',
             'privacyNote': 'GitHub Pages 공개 링크용 정적 브리핑. 검색 노출 최소화를 위해 noindex 메타 적용.',
         },
