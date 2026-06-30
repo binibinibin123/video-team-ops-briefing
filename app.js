@@ -183,7 +183,7 @@ function renderUpdates(updates) {
     const item = document.createElement('article');
     item.className = 'update-item';
     item.innerHTML = `
-      <strong>${safe(update.heading).replace('2026-06-29 — ', '')}</strong>
+      <strong>${safe(update.heading).replace(/^\d{4}-\d{2}-\d{2} — /, '')}</strong>
       <p>${safe(update.text)}</p>
     `;
     list.appendChild(item);
