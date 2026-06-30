@@ -782,10 +782,396 @@ h1 {
   font-weight: 800;
 }
 
+/* Separate calendar app page */
+.calendar-workspace {
+  min-height: 100vh;
+}
+.calendar-shell {
+  flex: 1;
+  display: grid;
+  gap: 12px;
+  padding: 16px 18px 12px;
+}
+.calendar-hero {
+  display: grid;
+  grid-template-columns: minmax(320px, .9fr) minmax(0, 1.1fr);
+  gap: 12px;
+}
+.calendar-title-card {
+  min-height: 112px;
+}
+.calendar-stat-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.summary-card.compact {
+  min-height: 112px;
+}
+.calendar-app-card {
+  min-height: 620px;
+  overflow: hidden;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-lg);
+  background: rgba(255,255,255,.98);
+  box-shadow: 0 1px 0 rgba(15,23,42,.02);
+}
+.calendar-app-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line-soft);
+  background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+}
+.calendar-app-toolbar h2 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -.04em;
+}
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.calendar-control {
+  min-height: 32px;
+  padding: 7px 11px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-pill);
+  background: #fff;
+  color: var(--ink-2);
+  font-size: 12px;
+  font-weight: 850;
+  cursor: pointer;
+}
+.calendar-control:hover {
+  border-color: var(--line-strong);
+  background: var(--surface);
+}
+.calendar-control.primary {
+  background: var(--navy-2);
+  border-color: var(--navy-2);
+  color: #fff;
+}
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  border-bottom: 1px solid var(--line-soft);
+  background: #f7f8fa;
+}
+.calendar-weekdays span {
+  min-height: 34px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  border-right: 1px solid var(--line-soft);
+  font-size: 11px;
+  font-weight: 900;
+}
+.calendar-weekdays span:last-child { border-right: 0; }
+.calendar-month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  background: var(--line-soft);
+  gap: 1px;
+}
+.calendar-cell {
+  min-height: 128px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 0;
+  background: #fff;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background .16s ease, box-shadow .16s ease, transform .16s ease;
+}
+.calendar-cell:hover {
+  background: #fbfcff;
+  box-shadow: inset 0 0 0 2px rgba(94,106,210,.18);
+  transform: translateY(-1px);
+}
+.calendar-cell.outside {
+  background: #f7f8fa;
+  color: var(--faint);
+}
+.calendar-cell.today {
+  background: #f8f9ff;
+  box-shadow: inset 0 0 0 2px rgba(94,106,210,.34), inset 0 4px 0 var(--accent);
+}
+.calendar-cell.has-log .cell-date {
+  color: var(--ink);
+}
+.cell-topline {
+  min-height: 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.cell-date {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 950;
+}
+.calendar-cell.today .cell-date {
+  background: var(--accent);
+  color: #fff;
+}
+.cell-load,
+.cell-change-count,
+.cell-more {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  font-style: normal;
+  white-space: nowrap;
+}
+.cell-load {
+  padding: 3px 7px;
+  background: var(--navy-2);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+}
+.cell-events {
+  display: grid;
+  gap: 5px;
+  min-height: 0;
+}
+.cell-event {
+  display: grid;
+  gap: 1px;
+  padding: 6px 7px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line-soft);
+  background: var(--surface);
+  line-height: 1.25;
+}
+.cell-event b {
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 950;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cell-event i {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cell-event.risk { background: var(--risk-bg); border-color: rgba(170,45,0,.16); }
+.cell-event.focus { background: var(--focus-bg); border-color: rgba(86,69,212,.16); }
+.cell-event.waiting { background: var(--waiting-bg); border-color: rgba(173,106,0,.18); }
+.cell-event.steady { background: var(--steady-bg); border-color: rgba(0,100,0,.12); }
+.cell-more {
+  padding: 2px 7px;
+  background: #eef0ff;
+  color: var(--focus);
+  font-size: 10px;
+  font-weight: 900;
+}
+.cell-empty {
+  color: var(--faint);
+  font-size: 11px;
+  font-weight: 750;
+}
+.cell-change-count {
+  margin-top: auto;
+  padding: 4px 7px;
+  background: #fff7ed;
+  color: var(--waiting);
+  border: 1px solid rgba(173,106,0,.16);
+  font-size: 10px;
+  font-weight: 900;
+}
+body.modal-open { overflow: hidden; }
+.day-modal[hidden] { display: none; }
+.day-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.day-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10,21,48,.48);
+  backdrop-filter: blur(8px);
+}
+.day-modal-panel {
+  position: relative;
+  z-index: 1;
+  width: min(820px, calc(100vw - 32px));
+  max-height: min(760px, calc(100vh - 32px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.28);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 28px 70px rgba(10,21,48,.26);
+  outline: none;
+}
+.day-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line-soft);
+  background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+}
+.day-modal-header h2 {
+  margin: 0 0 6px;
+  font-size: 24px;
+  letter-spacing: -.04em;
+}
+.day-modal-header p:last-child {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+.modal-close {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-soft);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+.day-modal-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  min-height: 0;
+  overflow: auto;
+}
+.modal-section {
+  min-width: 0;
+  padding: 16px;
+}
+.modal-section + .modal-section {
+  border-left: 1px solid var(--line-soft);
+  background: #fbfcfd;
+}
+.modal-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.modal-section-title span {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 950;
+}
+.modal-section-title strong {
+  min-width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--navy-2);
+  color: #fff;
+  font-size: 11px;
+}
+.modal-list {
+  display: grid;
+  gap: 8px;
+}
+.modal-item {
+  padding: 11px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background: #fff;
+}
+.modal-item.risk { border-color: rgba(170,45,0,.18); background: var(--risk-bg); }
+.modal-item.focus { border-color: rgba(86,69,212,.18); background: var(--focus-bg); }
+.modal-item.waiting { border-color: rgba(173,106,0,.18); background: var(--waiting-bg); }
+.modal-item.steady { border-color: rgba(0,100,0,.14); background: var(--steady-bg); }
+.modal-item.change { background: #fff; }
+.modal-item-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.modal-item-main strong {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 950;
+}
+.modal-item-main span {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+}
+.modal-item p {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+.modal-tags em {
+  padding: 3px 7px;
+  border: 1px solid rgba(24,29,38,.08);
+  border-radius: var(--radius-pill);
+  background: rgba(255,255,255,.76);
+  color: var(--muted);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+}
+.modal-empty {
+  margin: 0;
+  padding: 16px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  color: var(--faint);
+  background: #fff;
+  font-size: 12px;
+  font-weight: 800;
+}
+.calendar-footer { margin-top: 0; }
+
 @media (max-width: 1180px) {
   .summary-strip,
   .workbench-grid,
-  .lower-grid { grid-template-columns: 1fr; }
+  .lower-grid,
+  .calendar-hero { grid-template-columns: 1fr; }
   .right-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; }
   .sheet-panel { min-height: 480px; }
 }
@@ -796,9 +1182,18 @@ h1 {
   .side-rail { display: none; }
   .topbar { height: auto; min-height: 56px; align-items: flex-start; flex-direction: column; padding: 12px 14px; }
   .topbar-actions { flex-wrap: wrap; }
-  .summary-strip, .workbench-grid, .lower-grid { padding-left: 10px; padding-right: 10px; }
+  .summary-strip, .workbench-grid, .lower-grid, .calendar-shell { padding-left: 10px; padding-right: 10px; }
   .calendar-card { margin-left: 10px; margin-right: 10px; }
   .calendar-grid { grid-template-columns: repeat(6, minmax(170px, 1fr)); }
+  .calendar-stat-strip { grid-template-columns: 1fr; }
+  .calendar-app-toolbar { align-items: stretch; flex-direction: column; }
+  .calendar-controls { flex-wrap: wrap; }
+  .calendar-month-grid { min-width: 760px; }
+  .calendar-app-card { overflow-x: auto; }
+  .calendar-cell { min-height: 118px; }
+  .day-modal { padding: 10px; }
+  .day-modal-body { grid-template-columns: 1fr; }
+  .modal-section + .modal-section { border-left: 0; border-top: 1px solid var(--line-soft); }
   .summary-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .title-card { min-height: unset; }
   h1 { font-size: 22px; }

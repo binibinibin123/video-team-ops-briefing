@@ -228,7 +228,7 @@ def parse_decision_changes(path: Path):
         return grouped
     for raw in path.read_text(encoding='utf-8').splitlines():
         line = raw.strip()
-        m = re.match(r'^-\s+(\d{4}-\d{2}-\d{2})(?:\s+([^:]+))?:\s*(.+)$', line)
+        m = re.match(r'^-\s+(\d{4}-\d{2}-\d{2})(?:\s+((?:\d{1,2}:\d{2}\s*KST)|[^:]+?))?:\s*(.+)$', line)
         if not m:
             continue
         date, time_part, body = m.groups()
@@ -399,7 +399,7 @@ def build():
     data = {
         'meta': {
             'title': '영상팀 운영상황판',
-            'lastUpdated': '2026-06-30 14:00 KST · 한은지 비더후드 지원/듀오타이트 기획 2건 완료/캘린더 로그 탭 반영',
+            'lastUpdated': '2026-06-30 14:16 KST · 한은지 비더후드 지원/듀오타이트 기획 2건 완료/캘린더 전용 페이지·날짜 상세 모달 반영',
             'designReference': 'VoltAgent awesome-design-md 직접 적용: Airtable DESIGN.md 테이블/헤어라인 + Notion DESIGN.md DB 속성 태그 + Linear.app DESIGN.md 다크 사이드레일',
             'privacyNote': 'GitHub Pages 공개 링크용 정적 브리핑. 검색 노출 최소화를 위해 noindex 메타 적용.',
         },

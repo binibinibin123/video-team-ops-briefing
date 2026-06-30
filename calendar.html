@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <title>날짜별 변경 캘린더 · 영상팀 운영상황판</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body class="calendar-page">
+  <a class="skip-link" href="#monthGrid">달력으로 건너뛰기</a>
+
+  <div class="ops-os">
+    <aside class="side-rail" aria-label="워크스페이스 네비게이션">
+      <a class="rail-logo" href="./index.html#top" aria-label="영상팀 운영상황판 홈">V</a>
+      <nav class="rail-nav" aria-label="빠른 이동">
+        <a class="rail-item" href="./index.html#projectTable" title="업무 테이블"><span>▦</span></a>
+        <a class="rail-item" href="./index.html#people" title="팀 배치"><span>◉</span></a>
+        <a class="rail-item active" href="./calendar.html" title="날짜별 변경 캘린더"><span>◷</span></a>
+        <a class="rail-item" href="./index.html#updates" title="변경 로그"><span>≡</span></a>
+        <a class="rail-item" href="./DESIGN_MAPPING.md" title="디자인 근거"><span>⌁</span></a>
+      </nav>
+      <div class="rail-bottom" aria-label="시스템 상태">
+        <span class="rail-status"></span>
+        <span class="rail-mini">CAL</span>
+      </div>
+    </aside>
+
+    <div id="top" class="workspace calendar-workspace">
+      <header class="topbar">
+        <div class="crumbs" aria-label="현재 위치">
+          <span class="dot"></span>
+          <span>Ops</span>
+          <span>/</span>
+          <a href="./index.html">영상팀 운영상황판</a>
+          <span>/</span>
+          <strong>날짜별 변경 캘린더</strong>
+        </div>
+        <div class="topbar-actions" aria-label="페이지 정보">
+          <span class="pill ghost">읽기 전용</span>
+          <span class="pill ghost">GitHub Pages</span>
+          <span id="calendarUpdated" class="pill strong">업데이트 확인중</span>
+        </div>
+      </header>
+
+      <main class="calendar-shell" aria-label="날짜별 변경 캘린더 페이지">
+        <section class="calendar-hero">
+          <div class="title-card calendar-title-card">
+            <p class="eyebrow">DATE LOG CALENDAR</p>
+            <h1>날짜별 변경 캘린더</h1>
+            <p>달력 앱처럼 날짜별 업무·지원·변경 로그를 모아보고, 날짜를 누르면 상세 모달로 확인합니다.</p>
+          </div>
+          <div class="calendar-stat-strip" aria-label="캘린더 요약">
+            <article class="summary-card compact">
+              <span>기록 날짜</span>
+              <strong id="loggedDayCount">0</strong>
+              <em>업무/변경 로그가 있는 날짜</em>
+            </article>
+            <article class="summary-card compact">
+              <span>오늘 물량</span>
+              <strong id="todayLoad">-</strong>
+              <em>영상팀 유튜브 기준</em>
+            </article>
+            <article class="summary-card compact">
+              <span>오늘 이벤트</span>
+              <strong id="todayEventCount">0</strong>
+              <em>누가 뭐 했는지</em>
+            </article>
+          </div>
+        </section>
+
+        <section class="calendar-app-card" aria-labelledby="calendarTitle">
+          <div class="calendar-app-toolbar">
+            <div>
+              <p class="eyebrow">MONTH VIEW</p>
+              <h2 id="calendarTitle">월간 캘린더</h2>
+            </div>
+            <div class="calendar-controls" role="group" aria-label="월 이동">
+              <button id="prevMonth" type="button" class="calendar-control">‹ 이전</button>
+              <button id="todayMonth" type="button" class="calendar-control primary">오늘</button>
+              <button id="nextMonth" type="button" class="calendar-control">다음 ›</button>
+            </div>
+          </div>
+
+          <div class="calendar-weekdays" aria-hidden="true">
+            <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+          </div>
+          <div id="monthGrid" class="calendar-month-grid" aria-live="polite"></div>
+        </section>
+      </main>
+
+      <footer class="footer calendar-footer">
+        <span>Static briefing · public GitHub Pages · noindex</span>
+        <span id="calendarDesignRef"></span>
+      </footer>
+    </div>
+  </div>
+
+  <div id="dayModal" class="day-modal" hidden>
+    <div class="day-modal-backdrop" data-close-modal></div>
+    <section class="day-modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
+      <header class="day-modal-header">
+        <div>
+          <p id="modalEyebrow" class="eyebrow">DAY DETAIL</p>
+          <h2 id="modalTitle">날짜 상세</h2>
+          <p id="modalSubtitle">업무와 변경 로그를 확인합니다.</p>
+        </div>
+        <button id="modalClose" class="modal-close" type="button" aria-label="모달 닫기">×</button>
+      </header>
+      <div class="day-modal-body">
+        <section class="modal-section">
+          <div class="modal-section-title">
+            <span>누가 뭐 했는지</span>
+            <strong id="modalEventCount">0</strong>
+          </div>
+          <div id="modalEvents" class="modal-list"></div>
+        </section>
+        <section class="modal-section">
+          <div class="modal-section-title">
+            <span>변경 로그</span>
+            <strong id="modalChangeCount">0</strong>
+          </div>
+          <div id="modalChanges" class="modal-list"></div>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <script src="./calendar.js?v=20260630-calendar-page-modal" defer></script>
+</body>
+</html>
